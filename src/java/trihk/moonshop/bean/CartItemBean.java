@@ -5,6 +5,7 @@
  */
 package trihk.moonshop.bean;
 
+import java.util.Objects;
 import trihk.moonshop.entity.Cakes;
 
 /**
@@ -82,6 +83,31 @@ public class CartItemBean {
      */
     public void setAmount(int amount) {
         this.amount = amount;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 79 * hash + Objects.hashCode(this.cake);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final CartItemBean other = (CartItemBean) obj;
+        if (!Objects.equals(this.cake, other.cake)) {
+            return false;
+        }
+        return true;
     }
 
 }

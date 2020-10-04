@@ -7,7 +7,6 @@ package trihk.moonshop.bean;
 
 import java.util.HashMap;
 import java.util.Iterator;
-import static jdk.nashorn.internal.objects.NativeArray.map;
 
 /**
  *
