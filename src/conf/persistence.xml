@@ -14,6 +14,7 @@
     <class>trihk.moonshop.entity.Cakes</class>
     <class>trihk.moonshop.entity.Categories</class>
     <class>trihk.moonshop.entity.OrderDetails</class>
+    <class>trihk.moonshop.entity.UserRoles</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://localhost:1433;databaseName=MoonShop"/>

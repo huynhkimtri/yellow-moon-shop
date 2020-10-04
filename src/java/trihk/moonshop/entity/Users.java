@@ -6,21 +6,19 @@
 package trihk.moonshop.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -32,6 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Users.findAll", query = "SELECT u FROM Users u"),
     @NamedQuery(name = "Users.findByUsername", query = "SELECT u FROM Users u WHERE u.username = :username"),
+    @NamedQuery(name = "Users.findByUsernameAndPassword", query = "SELECT u FROM Users u WHERE u.username = :username AND u.password = :password"),
     @NamedQuery(name = "Users.findByPassword", query = "SELECT u FROM Users u WHERE u.password = :password"),
     @NamedQuery(name = "Users.findByFullName", query = "SELECT u FROM Users u WHERE u.fullName = :fullName"),
     @NamedQuery(name = "Users.findByEmail", query = "SELECT u FROM Users u WHERE u.email = :email"),
@@ -56,7 +55,8 @@ public class Users implements Serializable {
     private String fullName;
     @Column(name = "email", length = 32)
     private String email;
-    @Column(name = "phone", length = 16)
+    @Basic(optional = false)
+    @Column(name = "phone", nullable = false, length = 16)
     private String phone;
     @Column(name = "address", length = 64)
     private String address;
@@ -72,12 +72,9 @@ public class Users implements Serializable {
     @Column(name = "update_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateDate;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
-    private Collection<Orders> ordersCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "createUser")
-    private Collection<Cakes> cakesCollection;
-    @OneToMany(mappedBy = "updateUser")
-    private Collection<Cakes> cakesCollection1;
+    @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    private UserRoles roleId;
 
     public Users() {
     }
@@ -86,10 +83,11 @@ public class Users implements Serializable {
         this.username = username;
     }
 
-    public Users(String username, String password, String fullName, boolean isActive, Date createDate) {
+    public Users(String username, String password, String fullName, String phone, boolean isActive, Date createDate) {
         this.username = username;
         this.password = password;
         this.fullName = fullName;
+        this.phone = phone;
         this.isActive = isActive;
         this.createDate = createDate;
     }
@@ -174,31 +172,12 @@ public class Users implements Serializable {
         this.updateDate = updateDate;
     }
 
-    @XmlTransient
-    public Collection<Orders> getOrdersCollection() {
-        return ordersCollection;
+    public UserRoles getRoleId() {
+        return roleId;
     }
 
-    public void setOrdersCollection(Collection<Orders> ordersCollection) {
-        this.ordersCollection = ordersCollection;
-    }
-
-    @XmlTransient
-    public Collection<Cakes> getCakesCollection() {
-        return cakesCollection;
-    }
-
-    public void setCakesCollection(Collection<Cakes> cakesCollection) {
-        this.cakesCollection = cakesCollection;
-    }
-
-    @XmlTransient
-    public Collection<Cakes> getCakesCollection1() {
-        return cakesCollection1;
-    }
-
-    public void setCakesCollection1(Collection<Cakes> cakesCollection1) {
-        this.cakesCollection1 = cakesCollection1;
+    public void setRoleId(UserRoles roleId) {
+        this.roleId = roleId;
     }
 
     @Override
@@ -225,5 +204,5 @@ public class Users implements Serializable {
     public String toString() {
         return "trihk.moonshop.entity.Users[ username=" + username + " ]";
     }
-    
+
 }

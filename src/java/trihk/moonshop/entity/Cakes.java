@@ -35,6 +35,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Cakes.findAll", query = "SELECT c FROM Cakes c"),
+    @NamedQuery(name = "Cakes.findAllByIsActive", query = "SELECT c FROM Cakes c WHERE c.isActive = :isActive"),
+    @NamedQuery(name = "Cakes.findByNameAndPriceAndCategory",
+            query = "SELECT c FROM Cakes c WHERE c.name LIKE :name AND c.price >= :minPrice AND c.price <= :maxPrice AND c.categoryId.id = :cateId"),
     @NamedQuery(name = "Cakes.findById", query = "SELECT c FROM Cakes c WHERE c.id = :id"),
     @NamedQuery(name = "Cakes.findByName", query = "SELECT c FROM Cakes c WHERE c.name = :name"),
     @NamedQuery(name = "Cakes.findByImageUrl", query = "SELECT c FROM Cakes c WHERE c.imageUrl = :imageUrl"),
@@ -250,5 +253,5 @@ public class Cakes implements Serializable {
     public String toString() {
         return "trihk.moonshop.entity.Cakes[ id=" + id + " ]";
     }
-    
+
 }
