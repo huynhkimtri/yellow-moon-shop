@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="YellowMoonShopPU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>trihk.moonshop.entity.Order1</class>
+    <class>trihk.moonshop.entity.Category</class>
+    <class>trihk.moonshop.entity.User</class>
+    <class>trihk.moonshop.entity.Cake</class>
+    <class>trihk.moonshop.entity.OrderCake</class>
+    <class>trihk.moonshop.entity.Payment</class>
+    <class>trihk.moonshop.entity.Payments</class>
+    <class>trihk.moonshop.entity.Orders</class>
+    <class>trihk.moonshop.entity.Users</class>
+    <class>trihk.moonshop.entity.Cakes</class>
+    <class>trihk.moonshop.entity.Categories</class>
+    <class>trihk.moonshop.entity.OrderDetails</class>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://localhost:1433;databaseName=MoonShop"/>
+      <property name="javax.persistence.jdbc.user" value="sa"/>
+      <property name="javax.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+      <property name="javax.persistence.jdbc.password" value="12345678"/>
+    </properties>
+  </persistence-unit>
+</persistence>
