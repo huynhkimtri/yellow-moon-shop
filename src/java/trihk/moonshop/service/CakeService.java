@@ -5,14 +5,10 @@
  */
 package trihk.moonshop.service;
 
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import trihk.moonshop.dao.CakeDAO;
 import trihk.moonshop.dao.CategoryDAO;
 import trihk.moonshop.entity.Cakes;
-import static trihk.moonshop.entity.Cakes_.createDate;
 import trihk.moonshop.entity.Categories;
 
 /**

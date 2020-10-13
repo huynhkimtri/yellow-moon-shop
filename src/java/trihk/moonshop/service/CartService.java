@@ -15,7 +15,7 @@ import trihk.moonshop.entity.Cakes;
  * @author TriHuynh
  */
 public class CartService {
-
+    
     public CartBean addItemToCart(CartItemBean item, CartBean cart) {
         if (cart == null) {
             cart = new CartBean();
@@ -23,7 +23,7 @@ public class CartService {
         cart.addItem(item);
         return cart;
     }
-
+    
     public CartBean addItemToCart(int itemId, CartBean cart) {
         if (cart == null) {
             cart = new CartBean();
@@ -38,14 +38,14 @@ public class CartService {
         cart.addItem(item);
         return cart;
     }
-
+    
     public CartBean removeItemFromCart(CartItemBean item, CartBean cart) {
         if (cart != null) {
             cart.removeItem(item);
         }
         return cart;
     }
-
+    
     public CartBean removeItemFromCart(int itemId, CartBean cart) {
         if (cart != null) {
             CartItemBean item = new CartItemBean();
@@ -54,7 +54,16 @@ public class CartService {
         }
         return cart;
     }
-
+    
+    public CartBean updateItemFromCart(int itemId, CartBean cart, int quantity) {
+        if (cart != null) {
+            CartItemBean item = new CartItemBean();
+            item.setId(itemId);
+            cart.updateItem(item, quantity);
+        }
+        return cart;
+    }
+    
     public CartBean removeItemsFromCart(CartBean cart, List<CartItemBean> items) {
         if (cart != null) {
             int size = items.size();

@@ -6,18 +6,23 @@
 package trihk.moonshop.controller;
 
 import java.io.IOException;
+import java.util.List;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import trihk.moonshop.entity.OrderDetails;
+import trihk.moonshop.entity.Orders;
+import trihk.moonshop.service.OrderService;
 
 /**
  *
  * @author TriHuynh
  */
-@WebServlet(name = "CreateCakeController", urlPatterns = {"/CreateCakeController"})
-public class CreateCakeController extends HttpServlet {
+@WebServlet(name = "TrackOrderController", urlPatterns = {"/TrackOrderController"})
+public class TrackOrderController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,6 +36,23 @@ public class CreateCakeController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        String path = "tracking.jsp";
+        try {
+            String orderId = request.getParameter("orderId");
+            int id = Integer.parseInt(orderId);
+            OrderService service = new OrderService();
+            Orders order = service.getOrderById(id);
+            if (order != null) {
+                List<OrderDetails> orderDetails = service.getOrderDetailsByOrderId(id);
+                request.setAttribute("ORDER", order);
+                request.setAttribute("ORDER_DETAILS", orderDetails);
+            }
+        } catch (NumberFormatException e) {
+            // TODO
+        } finally {
+            RequestDispatcher dispatcher = request.getRequestDispatcher(path);
+            dispatcher.forward(request, response);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

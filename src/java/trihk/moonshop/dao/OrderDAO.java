@@ -10,20 +10,20 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
-import trihk.moonshop.entity.OrderDetails;
+import trihk.moonshop.entity.Orders;
 import trihk.moonshop.helper.DBHelper;
 
 /**
  *
  * @author TriHuynh
  */
-public class OrderDetailDAO {
+public class OrderDAO {
 
-    public OrderDetails insert(OrderDetails orderDetail) {
+    public Orders insert(Orders order) {
         EntityManager em = DBHelper.getEntityManager();
         try {
             em.getTransaction().begin();
-            em.persist(orderDetail);
+            em.persist(order);
             em.getTransaction().commit();
         } catch (Exception e) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
@@ -31,14 +31,14 @@ public class OrderDetailDAO {
         } finally {
             em.close();
         }
-        return orderDetail;
+        return order;
     }
 
-    public OrderDetails update(OrderDetails orderDetail) {
+    public Orders update(Orders order) {
         EntityManager em = DBHelper.getEntityManager();
         try {
             em.getTransaction().begin();
-            em.merge(orderDetail);
+            em.merge(order);
             em.getTransaction().commit();
         } catch (Exception e) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
@@ -46,17 +46,17 @@ public class OrderDetailDAO {
         } finally {
             em.close();
         }
-        return orderDetail;
+        return order;
     }
 
-    public OrderDetails remove(OrderDetails orderDetail) {
+    public Orders remove(Orders order) {
         EntityManager em = DBHelper.getEntityManager();
         try {
             em.getTransaction().begin();
-            if (!em.contains(orderDetail)) {
-                orderDetail = em.merge(orderDetail);
+            if (!em.contains(order)) {
+                order = em.merge(order);
             }
-            em.remove(orderDetail);
+            em.remove(order);
             em.getTransaction().commit();
         } catch (Exception e) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
@@ -64,15 +64,15 @@ public class OrderDetailDAO {
         } finally {
             em.close();
         }
-        return orderDetail;
+        return order;
     }
 
-    public OrderDetails getOne(int id) {
+    public Orders getOne(int id) {
         EntityManager em = DBHelper.getEntityManager();
-        OrderDetails orderDetail = null;
+        Orders order = null;
         try {
             em.getTransaction().begin();
-            orderDetail = em.find(OrderDetails.class, id);
+            order = em.find(Orders.class, id);
             em.getTransaction().commit();
         } catch (Exception e) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
@@ -80,16 +80,33 @@ public class OrderDetailDAO {
         } finally {
             em.close();
         }
-        return orderDetail;
+        return order;
     }
 
-    public List<OrderDetails> getListOrderDetailsByOrderId(int orderId) {
-        List<OrderDetails> list = new ArrayList<>();
+    public List<Orders> getListOrders() {
+        List<Orders> list = new ArrayList<>();
         EntityManager em = DBHelper.getEntityManager();
         try {
             em.getTransaction().begin();
-            list = em.createNamedQuery("OrderDetails.findByOrderId")
-                    .setParameter("id", orderId)
+            list = em.createNamedQuery("Orders.findAll")
+                    .getResultList();
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
+            em.getTransaction().rollback();
+        } finally {
+            em.close();
+        }
+        return list;
+    }
+
+    public List<Orders> getListOrdersByUser(String username) {
+        List<Orders> list = new ArrayList<>();
+        EntityManager em = DBHelper.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            list = em.createNamedQuery("Orders.findByUsername")
+                    .setParameter("username", username)
                     .getResultList();
             em.getTransaction().commit();
         } catch (Exception e) {

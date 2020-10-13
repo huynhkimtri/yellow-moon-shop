@@ -6,18 +6,22 @@
 package trihk.moonshop.controller;
 
 import java.io.IOException;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import trihk.moonshop.bean.CartBean;
+import trihk.moonshop.service.CartService;
 
 /**
  *
  * @author TriHuynh
  */
-@WebServlet(name = "CreateCakeController", urlPatterns = {"/CreateCakeController"})
-public class CreateCakeController extends HttpServlet {
+@WebServlet(name = "UpdateItemController", urlPatterns = {"/UpdateItemController"})
+public class UpdateItemController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,6 +35,21 @@ public class CreateCakeController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        try {
+            String id = request.getParameter("cakeId");
+            int cakeId = Integer.parseInt(id);
+            String quan = request.getParameter("quantity");
+            int quantity = Integer.parseInt(quan);
+            CartBean cart = (CartBean) request.getSession().getAttribute("MY_CART");
+            CartService sCart = new CartService();
+            cart = sCart.updateItemFromCart(cakeId, cart, quantity);
+            HttpSession session = request.getSession();
+            session.setAttribute("MY_CART", cart);
+        } catch (NumberFormatException e) {
+            // TODO
+        } finally {
+            response.sendRedirect("myCart.jsp");
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

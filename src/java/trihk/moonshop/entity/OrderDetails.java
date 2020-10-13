@@ -29,6 +29,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "OrderDetails.findAll", query = "SELECT o FROM OrderDetails o"),
+    @NamedQuery(name = "OrderDetails.findByOrderId", query = "SELECT o FROM OrderDetails o WHERE o.orderId.id = :id"),
     @NamedQuery(name = "OrderDetails.findById", query = "SELECT o FROM OrderDetails o WHERE o.id = :id"),
     @NamedQuery(name = "OrderDetails.findByQuantity", query = "SELECT o FROM OrderDetails o WHERE o.quantity = :quantity"),
     @NamedQuery(name = "OrderDetails.findBySinglePrice", query = "SELECT o FROM OrderDetails o WHERE o.singlePrice = :singlePrice"),
@@ -155,5 +156,5 @@ public class OrderDetails implements Serializable {
     public String toString() {
         return "trihk.moonshop.entity.OrderDetails[ id=" + id + " ]";
     }
-    
+
 }

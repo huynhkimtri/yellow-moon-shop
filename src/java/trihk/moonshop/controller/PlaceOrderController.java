@@ -6,6 +6,7 @@
 package trihk.moonshop.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,8 +17,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author TriHuynh
  */
-@WebServlet(name = "CreateCakeController", urlPatterns = {"/CreateCakeController"})
-public class CreateCakeController extends HttpServlet {
+@WebServlet(name = "PlaceOrderController", urlPatterns = {"/PlaceOrderController"})
+public class PlaceOrderController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,6 +32,17 @@ public class CreateCakeController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        try {
+            String name = request.getParameter("name");
+            String phone = request.getParameter("phone");
+            String email = request.getParameter("email");
+            String address = request.getParameter("address");
+            String payment = request.getParameter("payment");
+            request.setAttribute("MSG", "Create success!");
+        } catch (Exception e) {
+        } finally {
+            
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
