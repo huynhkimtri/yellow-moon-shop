@@ -5,10 +5,14 @@
  */
 package trihk.moonshop.service;
 
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import trihk.moonshop.dao.CakeDAO;
 import trihk.moonshop.dao.CategoryDAO;
 import trihk.moonshop.entity.Cakes;
+import static trihk.moonshop.entity.Cakes_.createDate;
 import trihk.moonshop.entity.Categories;
 
 /**
@@ -16,6 +20,16 @@ import trihk.moonshop.entity.Categories;
  * @author TriHuynh
  */
 public class CakeService {
+
+    private final String ID = "txtId";
+    private final String NAME = "txtName";
+    private final String DES = "txtDescription";
+    private final String QUANTITY = "txtId";
+    private final String PRICE = "txtId";
+    private final String CRE_DATE = "txtId";
+    private final String EXP_DATE = "txtId";
+    private final String ROLE_ID = "txtId";
+    private final String CATE_ID = "txtId";
 
     private final CakeDAO cakeDao = new CakeDAO();
     private final CategoryDAO categoryDao = new CategoryDAO();
@@ -34,4 +48,16 @@ public class CakeService {
         List<Cakes> cakes = cakeDao.getListCake(likeName, minPrice, maxPrice, categoryId, limit, page);
         return cakes;
     }
+
+    public Cakes updateCake(int id, String name, String description,
+            boolean status, String createDate, String expirationDate,
+            int quantity, int price, int categoryId, String updateUser) {
+        Cakes updatedCake = new Cakes();
+        return updatedCake;
+    }
+
+    public Cakes getOne(int id) {
+        return cakeDao.getOne(id);
+    }
+
 }

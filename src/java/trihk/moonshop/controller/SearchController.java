@@ -6,7 +6,6 @@
 package trihk.moonshop.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,7 +13,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.eclipse.jdt.internal.compiler.impl.Constant;
 import trihk.moonshop.entity.Cakes;
 import trihk.moonshop.entity.Categories;
 import trihk.moonshop.helper.Constants;
@@ -52,11 +50,15 @@ public class SearchController extends HttpServlet {
             List<Cakes> listCakes
                     = service.getListAll(keyword, minPrice, maxPrice,
                             categoryId, Constants.SIZE_OF_PAGE, 1);
-            System.out.println(listCakes);
             request.setAttribute("LIST_CAKES", listCakes);
             List<Categories> listCategories = service.getListCategories();
             request.setAttribute("LIST_CATEGORIES", listCategories);
+            request.setAttribute("KEYWORD", keyword);
+            request.setAttribute("MIN", minPrice);
+            request.setAttribute("MAX", maxPrice);
+            request.setAttribute("CATEGORY", categoryId);
         } catch (NumberFormatException e) {
+            // TODO
         } finally {
             RequestDispatcher dispatcher = request.getRequestDispatcher(path);
             dispatcher.forward(request, response);

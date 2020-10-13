@@ -6,27 +6,24 @@
 package trihk.moonshop.controller;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.Arrays;
+import java.util.Map;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import trihk.moonshop.bean.CartBean;
 import trihk.moonshop.entity.Cakes;
-import trihk.moonshop.entity.Categories;
+import trihk.moonshop.entity.Users;
 import trihk.moonshop.service.CakeService;
 
 /**
  *
  * @author TriHuynh
  */
-@WebServlet(name = "HomeController", urlPatterns = {"/HomeController"})
-public class HomeController extends HttpServlet {
-
-    private final String homePage = "home.jsp";
+@WebServlet(name = "UpdateCakeController", urlPatterns = {"/UpdateCakeController"})
+public class UpdateCakeController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,23 +37,26 @@ public class HomeController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String path = homePage;
+//         name, image, price, category, quantity, createDate, expirationDate, status..
         try {
+            String id = request.getParameter("id");
+            int cakeId = Integer.parseInt(id);
+            String txtName = request.getParameter("txtName");
+            String txtImageUrl = request.getParameter("txtImageUrl");
+            String txtPrice = request.getParameter("txtPrice");
+            String txtQuantity = request.getParameter("txtQuantity");
+            String dtmCreateDate = request.getParameter("dtmCreateDate");
+            String dtmExpirationDate = request.getParameter("dtmExpirationDate");
+            String cbxCategory = request.getParameter("cbxCategory");
+            String cbxStatus = request.getParameter("cbxStatus");
+            Users user = (Users) request.getSession().getAttribute("USER");
             CakeService service = new CakeService();
-            List<Cakes> listCakes = service.getListAll();
-            List<Categories> listCategories = service.getListCategories();
-            request.setAttribute("LIST_CATEGORIES", listCategories);
-            request.setAttribute("LIST_CAKES", listCakes);
-            request.setAttribute("MIN", 10000);
-            request.setAttribute("MAX", 1000000);
-
-            HttpSession session = request.getSession();
-            CartBean cart = (CartBean) session.getAttribute("MY_CART");
-            System.out.println(cart);
-        } catch (Exception e) {
-        } finally {
-            RequestDispatcher dispatcher = request.getRequestDispatcher(path);
+            Cakes newCake = service.updateCake(cakeId, txtName, dtmCreateDate,
+                    true, dtmCreateDate, dtmExpirationDate,
+                    0, 0, 0, cbxStatus);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("home");
             dispatcher.forward(request, response);
+        } catch (IOException | ServletException e) {
         }
     }
 

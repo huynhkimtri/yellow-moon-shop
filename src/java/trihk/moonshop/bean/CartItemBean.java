@@ -5,56 +5,72 @@
  */
 package trihk.moonshop.bean;
 
-import java.util.Objects;
-import trihk.moonshop.entity.Cakes;
-
 /**
  *
  * @author TriHuynh
  */
 public class CartItemBean {
 
-    private Cakes cake;
-    private int quantity;
+    private int id;
+    private String name;
+    private String img;
     private int price;
-    private int amount;
 
     public CartItemBean() {
     }
 
-    public CartItemBean(Cakes cake, int quantity, int price, int amount) {
-        this.cake = cake;
-        this.quantity = quantity;
+    public CartItemBean(int id, String name, String img, int price) {
+        this.id = id;
+        this.name = name;
+        this.img = img;
         this.price = price;
-        this.amount = amount;
+    }
+
+    public CartItemBean(int id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
     /**
-     * @return the cake
+     * @return the id
      */
-    public Cakes getCake() {
-        return cake;
+    public int getId() {
+        return id;
     }
 
     /**
-     * @param cake the cake to set
+     * @param id the id to set
      */
-    public void setCake(Cakes cake) {
-        this.cake = cake;
+    public void setId(int id) {
+        this.id = id;
     }
 
     /**
-     * @return the quantity
+     * @return the name
      */
-    public int getQuantity() {
-        return quantity;
+    public String getName() {
+        return name;
     }
 
     /**
-     * @param quantity the quantity to set
+     * @param name the name to set
      */
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * @return the img
+     */
+    public String getImg() {
+        return img;
+    }
+
+    /**
+     * @param img the img to set
+     */
+    public void setImg(String img) {
+        this.img = img;
     }
 
     /**
@@ -71,24 +87,10 @@ public class CartItemBean {
         this.price = price;
     }
 
-    /**
-     * @return the amount
-     */
-    public int getAmount() {
-        return amount;
-    }
-
-    /**
-     * @param amount the amount to set
-     */
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 79 * hash + Objects.hashCode(this.cake);
+        int hash = 5;
+        hash = 83 * hash + this.id;
         return hash;
     }
 
@@ -104,7 +106,7 @@ public class CartItemBean {
             return false;
         }
         final CartItemBean other = (CartItemBean) obj;
-        if (!Objects.equals(this.cake, other.cake)) {
+        if (this.id != other.id) {
             return false;
         }
         return true;

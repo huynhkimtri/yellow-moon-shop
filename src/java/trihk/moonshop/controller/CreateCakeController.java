@@ -6,27 +6,19 @@
 package trihk.moonshop.controller;
 
 import java.io.IOException;
-import java.util.List;
-import javax.servlet.RequestDispatcher;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import trihk.moonshop.bean.CartBean;
-import trihk.moonshop.entity.Cakes;
-import trihk.moonshop.entity.Categories;
-import trihk.moonshop.service.CakeService;
 
 /**
  *
  * @author TriHuynh
  */
-@WebServlet(name = "HomeController", urlPatterns = {"/HomeController"})
-public class HomeController extends HttpServlet {
-
-    private final String homePage = "home.jsp";
+@WebServlet(name = "CreateCakeController", urlPatterns = {"/CreateCakeController"})
+public class CreateCakeController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,24 +32,6 @@ public class HomeController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String path = homePage;
-        try {
-            CakeService service = new CakeService();
-            List<Cakes> listCakes = service.getListAll();
-            List<Categories> listCategories = service.getListCategories();
-            request.setAttribute("LIST_CATEGORIES", listCategories);
-            request.setAttribute("LIST_CAKES", listCakes);
-            request.setAttribute("MIN", 10000);
-            request.setAttribute("MAX", 1000000);
-
-            HttpSession session = request.getSession();
-            CartBean cart = (CartBean) session.getAttribute("MY_CART");
-            System.out.println(cart);
-        } catch (Exception e) {
-        } finally {
-            RequestDispatcher dispatcher = request.getRequestDispatcher(path);
-            dispatcher.forward(request, response);
-        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

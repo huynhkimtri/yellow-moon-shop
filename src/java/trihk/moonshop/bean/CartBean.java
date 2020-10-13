@@ -6,7 +6,7 @@
 package trihk.moonshop.bean;
 
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.Map;
 
 /**
  *
@@ -15,34 +15,68 @@ import java.util.Iterator;
 public class CartBean {
 
     private int totalAmount;
-    private HashMap cart;
+    private Map<CartItemBean, Integer> items;
 
-    public CartBean() {
+    public Map<CartItemBean, Integer> getItems() {
+        return items;
+    }
+
+    public int getTotalAmount() {
+        return totalAmount;
     }
 
     public void addItem(CartItemBean item) {
-        if (this.cart.containsKey(item)) {
-            CartItemBean oldItem = (CartItemBean) this.cart.get(item);
-            int quantity = oldItem.getQuantity();
-            oldItem.setQuantity(quantity + 1);
-        } else {
-            this.cart.put(item, 1);
+        if (items == null) {
+            items = new HashMap<>();
         }
+        int quantity = 1;
+        if (items.containsKey(item)) {
+            quantity = items.get(item) + 1;
+        }
+        items.put(item, quantity);
+        setTotalAmount();
     }
 
     public boolean removeItem(CartItemBean item) {
-        if (this.cart.containsKey(item)) {
-            this.cart.remove(item);
+        if (items == null) {
+            return false;
+        }
+        if (items.containsKey(item)) {
+            items.remove(item);
+            if (items.isEmpty()) {
+                items = null;
+            } else {
+                setTotalAmount();
+            }
             return true;
         }
         return false;
     }
 
-    public void setTotalAmount() {
-        Iterator<String> itr = this.cart.keySet().iterator();
-        while (itr.hasNext()) {
-            CartItemBean item = (CartItemBean) this.cart.get(itr.next());
-            totalAmount += item.getPrice() * item.getQuantity();
+    public void updateItem(CartItemBean item, int quantity) {
+        if (items == null) {
+            return;
+        }
+        if (items.containsKey(item)) {
+            items.put(item, quantity);
+            setTotalAmount();
         }
     }
+
+    private void setTotalAmount() {
+        totalAmount = 0;
+        for (Map.Entry<CartItemBean, Integer> entry : items.entrySet()) {
+            CartItemBean key = entry.getKey();
+            totalAmount += entry.getValue() * key.getPrice();
+        }
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("CartBean{cart=").append(items.size());
+        sb.append('}');
+        return sb.toString();
+    }
+
 }
