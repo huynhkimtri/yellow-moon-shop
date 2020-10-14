@@ -66,7 +66,7 @@ public class UserDAO {
         return user;
     }
 
-    public boolean getByUsername(String username) {
+    public boolean checkByUsername(String username) {
         boolean isFound = false;
         EntityManager em = DBHelper.getEntityManager();
         try {
@@ -85,6 +85,25 @@ public class UserDAO {
             em.close();
         }
         return isFound;
+    }
+
+    public Users getByUsername(String username) {
+        Users user = null;
+        EntityManager em = DBHelper.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            user = (Users) em.createNamedQuery("Users.findByUsername")
+                    .setParameter("username", username)
+                    .getSingleResult();
+
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
+            em.getTransaction().rollback();
+        } finally {
+            em.close();
+        }
+        return user;
     }
 
 }

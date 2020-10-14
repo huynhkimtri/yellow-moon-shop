@@ -10,6 +10,7 @@ import trihk.moonshop.dao.CakeDAO;
 import trihk.moonshop.dao.CategoryDAO;
 import trihk.moonshop.entity.Cakes;
 import trihk.moonshop.entity.Categories;
+import trihk.moonshop.helper.Constants;
 
 /**
  *
@@ -35,13 +36,18 @@ public class CakeService {
         return list;
     }
 
-    public List<Cakes> getListAll() {
-        List<Cakes> cakes = cakeDao.getListCake(10, 1);
+    public List<Cakes> getListAll(boolean isActive) {
+        List<Cakes> cakes = cakeDao.getListCake(isActive, Constants.SIZE_OF_PAGE, 0);
         return cakes;
     }
 
-    public List<Cakes> getListAll(String likeName, int minPrice, int maxPrice, int categoryId, int limit, int page) {
-        List<Cakes> cakes = cakeDao.getListCake(likeName, minPrice, maxPrice, categoryId, limit, page);
+    public List<Cakes> getListAll(String likeName, int minPrice, int maxPrice, int categoryId, boolean isActive, int limit, int page) {
+        List<Cakes> cakes;
+        if (categoryId > 0) {
+            cakes = cakeDao.getListCake(likeName, minPrice, maxPrice, categoryId, isActive, limit, page);
+        } else {
+            cakes = cakeDao.getListCake(likeName, minPrice, maxPrice, isActive, limit, page);
+        }
         return cakes;
     }
 
@@ -54,6 +60,18 @@ public class CakeService {
 
     public Cakes getOne(int id) {
         return cakeDao.getOne(id);
+    }
+
+    public int countForHome(boolean isActive) {
+        return cakeDao.getCount(isActive);
+    }
+
+    public int countForSearch(String likeName, int minPrice, int maxPrice, int categoryId, boolean isActive) {
+        if (categoryId > 0) {
+            return cakeDao.getCount(likeName, minPrice, maxPrice, categoryId, isActive);
+        } else {
+            return cakeDao.getCount(likeName, minPrice, maxPrice, isActive);
+        }
     }
 
 }

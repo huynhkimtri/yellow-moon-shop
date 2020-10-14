@@ -43,16 +43,41 @@ public class SearchController extends HttpServlet {
             String min = request.getParameter("min");
             String max = request.getParameter("max");
             String category = request.getParameter("category");
+            String page = request.getParameter("page");
             int minPrice = Integer.parseInt(min.trim());
             int maxPrice = Integer.parseInt(max.trim());
-            int categoryId = Integer.parseInt(category.trim());
+            int categoryId;
+            try {
+                categoryId = Integer.parseInt(category.trim());
+            } catch (NumberFormatException e) {
+                categoryId = 0;
+            }
             CakeService service = new CakeService();
+
+            int size = service.countForSearch(keyword, minPrice, maxPrice,
+                    categoryId, Boolean.TRUE);
+
+            int numOfPages = size / Constants.SIZE_OF_PAGE;
+            if (size % Constants.SIZE_OF_PAGE != 0) {
+                numOfPages = size / Constants.SIZE_OF_PAGE + 1;
+            }
+            int pageIndex = 0;
+            try {
+                if (page != null) {
+                    pageIndex = Integer.parseInt(page.trim()) - 1;
+                }
+            } catch (NumberFormatException e) {
+                pageIndex = 0;
+            }
             List<Cakes> listCakes
                     = service.getListAll(keyword, minPrice, maxPrice,
-                            categoryId, Constants.SIZE_OF_PAGE, 1);
+                            categoryId, Boolean.TRUE, Constants.SIZE_OF_PAGE, pageIndex);
             request.setAttribute("LIST_CAKES", listCakes);
             List<Categories> listCategories = service.getListCategories();
             request.setAttribute("LIST_CATEGORIES", listCategories);
+            request.setAttribute("NUMBER_OF_PAGES", numOfPages);
+            request.setAttribute("PAGE_INDEX", pageIndex);
+            request.setAttribute("CURRENT_PAGE", pageIndex + 1);
             request.setAttribute("KEYWORD", keyword);
             request.setAttribute("MIN", minPrice);
             request.setAttribute("MAX", maxPrice);

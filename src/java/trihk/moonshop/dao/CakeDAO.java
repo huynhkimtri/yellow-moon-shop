@@ -83,12 +83,15 @@ public class CakeDAO implements Serializable {
         return list;
     }
 
-    public List<Cakes> getListCake(int limit, int page) {
+    public List<Cakes> getListCake(boolean isActive, int limit, int index) {
         List<Cakes> list = new ArrayList<>();
         EntityManager em = DBHelper.getEntityManager();
         try {
             em.getTransaction().begin();
-            list = em.createNamedQuery("Cakes.findAll")
+            list = em.createNamedQuery("Cakes.findAllByIsActive")
+                    .setParameter("isActive", isActive)
+                    .setFirstResult(limit * index)
+                    .setMaxResults(limit)
                     .getResultList();
             em.getTransaction().commit();
         } catch (Exception e) {
@@ -121,7 +124,30 @@ public class CakeDAO implements Serializable {
         return list;
     }
 
-    public List<Cakes> getListCake(String likeName, int minPrice, int maxPrice, int categoryId, int limit, int index) {
+    public List<Cakes> getListCake(String likeName, int minPrice, int maxPrice, boolean isActive, int limit, int index) {
+        List<Cakes> list = new ArrayList<>();
+        EntityManager em = DBHelper.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            list = em.createNamedQuery("Cakes.findByNameAndPrice")
+                    .setParameter("name", "%" + likeName + "%")
+                    .setParameter("minPrice", minPrice)
+                    .setParameter("maxPrice", maxPrice)
+                    .setParameter("isActive", isActive)
+                    .setFirstResult(limit * index)
+                    .setMaxResults(limit)
+                    .getResultList();
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
+            em.getTransaction().rollback();
+        } finally {
+            em.close();
+        }
+        return list;
+    }
+
+    public List<Cakes> getListCake(String likeName, int minPrice, int maxPrice, int categoryId, boolean isActive, int limit, int index) {
         List<Cakes> list = new ArrayList<>();
         EntityManager em = DBHelper.getEntityManager();
         try {
@@ -131,8 +157,9 @@ public class CakeDAO implements Serializable {
                     .setParameter("minPrice", minPrice)
                     .setParameter("maxPrice", maxPrice)
                     .setParameter("cateId", categoryId)
-                    .setFirstResult(index - 1)
-                    .setMaxResults((index - 1) * limit)
+                    .setParameter("isActive", isActive)
+                    .setFirstResult(limit * index)
+                    .setMaxResults(limit)
                     .getResultList();
             em.getTransaction().commit();
         } catch (Exception e) {
@@ -160,20 +187,68 @@ public class CakeDAO implements Serializable {
         return count;
     }
 
-    public int getCount(int status) {
+    public int getCount(boolean isActive) {
         int count = 0;
         EntityManager em = DBHelper.getEntityManager();
         try {
             em.getTransaction().begin();
-            count = em.createNamedQuery("Cakes.findAllByIsActive")
-                    .setParameter("isActivie", status)
-                    .getMaxResults();
+            List<Cakes> list = em.createNamedQuery("Cakes.findAllByIsActive")
+                    .setParameter("isActive", isActive)
+                    .getResultList();
+            count = list.size();
             em.getTransaction().commit();
         } catch (Exception e) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
             em.getTransaction().rollback();
         } finally {
             em.close();
+        }
+        return count;
+    }
+
+    public int getCount(String likeName, int minPrice, int maxPrice, int categoryId, boolean isActive) {
+        int count = 0;
+        EntityManager entityManager = DBHelper.getEntityManager();
+        try {
+            entityManager.getTransaction().begin();
+            List<Cakes> list = entityManager.createNamedQuery("Cakes.findByNameAndPriceAndCategory")
+                    .setParameter("name", "%" + likeName + "%")
+                    .setParameter("minPrice", minPrice)
+                    .setParameter("maxPrice", maxPrice)
+                    .setParameter("cateId", categoryId)
+                    .setParameter("isActive", isActive)
+                    .getResultList();
+            count = list.size();
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
+        } finally {
+            if (entityManager != null) {
+                entityManager.close();
+            }
+        }
+        return count;
+    }
+
+    public int getCount(String likeName, int minPrice, int maxPrice, boolean isActive) {
+        int count = 0;
+        EntityManager entityManager = DBHelper.getEntityManager();
+        try {
+            entityManager.getTransaction().begin();
+            List<Cakes> list = entityManager.createNamedQuery("Cakes.findByNameAndPrice")
+                    .setParameter("name", "%" + likeName + "%")
+                    .setParameter("minPrice", minPrice)
+                    .setParameter("maxPrice", maxPrice)
+                    .setParameter("isActive", isActive)
+                    .getResultList();
+            count = list.size();
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
+        } finally {
+            if (entityManager != null) {
+                entityManager.close();
+            }
         }
         return count;
     }

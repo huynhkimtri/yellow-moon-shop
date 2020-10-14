@@ -6,12 +6,16 @@
 package trihk.moonshop.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import trihk.moonshop.bean.CartBean;
+import trihk.moonshop.entity.Orders;
+import trihk.moonshop.entity.Users;
+import trihk.moonshop.service.OrderService;
 
 /**
  *
@@ -38,10 +42,22 @@ public class PlaceOrderController extends HttpServlet {
             String email = request.getParameter("email");
             String address = request.getParameter("address");
             String payment = request.getParameter("payment");
-            request.setAttribute("MSG", "Create success!");
+            HttpSession session = request.getSession();
+            CartBean cart = (CartBean) session.getAttribute("MY_CART");
+            Users user = (Users) session.getAttribute("USER");
+            String username = null;
+            if (user != null) {
+                username = user.getUsername();
+            }
+            OrderService service = new OrderService();
+            Orders order = service.saveOrder(cart, username, name, phone, email, address, payment);
+            if (order != null) {
+                session.removeAttribute("MY_CART");
+            }
         } catch (Exception e) {
+            // TODO
         } finally {
-            
+            response.sendRedirect("./");
         }
     }
 

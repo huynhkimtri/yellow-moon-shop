@@ -13,10 +13,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import trihk.moonshop.bean.CartBean;
 import trihk.moonshop.entity.Cakes;
 import trihk.moonshop.entity.Categories;
+import trihk.moonshop.helper.Constants;
 import trihk.moonshop.service.CakeService;
 
 /**
@@ -43,17 +42,24 @@ public class HomeController extends HttpServlet {
         String path = homePage;
         try {
             CakeService service = new CakeService();
-            List<Cakes> listCakes = service.getListAll();
+            List<Cakes> listCakes = service.getListAll(true);
             List<Categories> listCategories = service.getListCategories();
+
+            int size = service.countForHome(true);
+            int numOfPages = size / Constants.SIZE_OF_PAGE;
+            if (size % Constants.SIZE_OF_PAGE != 0) {
+                numOfPages = size / Constants.SIZE_OF_PAGE + 1;
+            }
+
             request.setAttribute("LIST_CATEGORIES", listCategories);
             request.setAttribute("LIST_CAKES", listCakes);
-            request.setAttribute("MIN", 10000);
-            request.setAttribute("MAX", 1000000);
+            request.setAttribute("MIN", 0);
+            request.setAttribute("MAX", 999999999);
+            request.setAttribute("NUMBER_OF_PAGES", numOfPages);
+            request.setAttribute("CURRENT_PAGE", 1);
 
-            HttpSession session = request.getSession();
-            CartBean cart = (CartBean) session.getAttribute("MY_CART");
-            System.out.println(cart);
         } catch (Exception e) {
+            // TODO
         } finally {
             RequestDispatcher dispatcher = request.getRequestDispatcher(path);
             dispatcher.forward(request, response);

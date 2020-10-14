@@ -11,13 +11,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author TriHuynh
  */
-@WebServlet(name = "CheckoutController", urlPatterns = {"/CheckoutController"})
-public class CheckoutController extends HttpServlet {
+@WebServlet(name = "SignOutController", urlPatterns = {"/SignOutController"})
+public class SignOutController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,8 +32,12 @@ public class CheckoutController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
-        
+        String path = "./";
+        HttpSession session = request.getSession();
+        if (session != null) {
+            session.removeAttribute("USER");
+        }
+        response.sendRedirect(path);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

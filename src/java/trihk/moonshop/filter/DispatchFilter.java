@@ -57,23 +57,25 @@ public class DispatchFilter implements Filter {
             String uri = req.getRequestURI();
             String url;
             int lastIndex = uri.lastIndexOf("/");
-            String resource = uri.substring(lastIndex + 1);
-            if (resource.length() > 0) {
-                url = resource.substring(0, 1).toUpperCase()
-                        + resource.substring(1) + "Controller";
-                if (resource.lastIndexOf(".html") > 0 || resource.lastIndexOf(".jsp") > 0) {
-                    url = resource;
+            boolean isCssFile = uri.contains(".css");
+            if (!isCssFile) {
+                String resource = uri.substring(lastIndex + 1);
+                if (resource.length() > 0) {
+                    url = resource.substring(0, 1).toUpperCase()
+                            + resource.substring(1) + "Controller";
+                    if (resource.lastIndexOf(".html") > 0 || resource.lastIndexOf(".jsp") > 0) {
+                        url = resource;
+                    }
+                } else {
+                    url = "HomeController";
                 }
-            } else {
-                url = "HomeController";
-            }
 
-            if (url != null) {
-                System.out.println(uri);
-                System.out.println(resource);
-                System.out.println(url);
-                RequestDispatcher dispatcher = req.getRequestDispatcher(url);
-                dispatcher.forward(request, response);
+                if (url != null) {
+                    RequestDispatcher dispatcher = req.getRequestDispatcher(url);
+                    dispatcher.forward(request, response);
+                } else {
+                    chain.doFilter(request, response);
+                }
             } else {
                 chain.doFilter(request, response);
             }
@@ -83,7 +85,8 @@ public class DispatchFilter implements Filter {
 
         // If there was a problem, we want to rethrow it if it is
         // a known type, otherwise log it.
-        if (problem != null) {
+        if (problem
+                != null) {
             if (problem instanceof ServletException) {
                 throw (ServletException) problem;
             }

@@ -36,13 +36,24 @@
                         <li class="nav-item">
                             <a class="nav-link " href="tracking.jsp" >Tracking Order</a>
                         </li>
+
                         <c:set value="${sessionScope.USER}" var="user"/>
                         <c:if test="${not empty user}">
                             <li class="nav-item">
                                 <a class="nav-link" href="#">Hello, ${user.fullName}</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="signOut">Sign out</a>
+                            </li>
                         </c:if>
-
+                        <c:if test="${empty user}">
+                            <li class="nav-item">
+                                <a class="btn btn-primary" href="signup.jsp">Register</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn btn-outline-primary" href="signin.jsp">Sign in</a>
+                            </li>
+                        </c:if>
                     </ul>
                 </div>
             </div>
@@ -55,11 +66,11 @@
                            value="${requestScope.KEYWORD}"/>
 
                     <label for="min">Min price:</label>
-                    <input type="number" class="form-control" id="min" name="min" min="10000" max="1000000" 
+                    <input type="number" class="form-control" id="min" name="min" min="0" max="999999999" 
                            required="true" value="${requestScope.MIN}"/>
 
                     <label for="max">Max price:</label>
-                    <input type="number" class="form-control" id="max" name="max" min="10000" max="1000000" 
+                    <input type="number" class="form-control" id="max" name="max" min="0" max="999999999" 
                            required="true" value="${requestScope.MAX}">
 
                     <label for="category">Category:</label>
@@ -110,6 +121,21 @@
                                 </div>
                             </c:forEach>
                         </div>
+                        <!-- Pagination -->
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination pagination-template d-flex justify-content-center">
+                                <c:set value="${requestScope.PAGE_NUMBER}" var="pageNummber" />
+                                <c:set value="${requestScope.NUMBER_OF_PAGES}" var="numOfPages" />
+                                <c:set value="${requestScope.CURRENT_PAGE}" var="currentPage" />
+                                <c:forEach begin="1" end="${numOfPages}" step="1" varStatus="theCount">
+                                    <li class="page-item <c:if test="${currentPage eq theCount.count}">active</c:if>">
+                                            <a class="page-link" 
+                                               href="search?keyword=${requestScope.KEYWORD}&min=${requestScope.MIN}&max=${requestScope.MAX}&category=${requestScope.CATEGORY}&page=${theCount.count}">
+                                            ${theCount.count}</a>
+                                    </li>
+                                </c:forEach>
+                            </ul>
+                        </nav>
                     </c:if>
                     <c:if test="${empty cakes}">
                         <p>No cakes was found!</p>

@@ -69,11 +69,11 @@
             </tr>
         </table>
         <h3>Payment method:</h3> 
-        <input type="radio" id="cod" checked="true" name="payment" value="cod">
+        <input type="radio" id="cod" checked="true" name="payment" value="2">
         <label for="cod">Cash on Delivery</label><br>
-        <input type="radio" id="paypal" name="payment" value="paypal">
+        <input type="radio" id="paypal" name="payment" value="3">
         <label for="paypal">Paypal</label><br>
-        <input type="radio" id="bank" name="payment" value="bank">
+        <input type="radio" id="bank" name="payment" value="4">
         <label for="bank">Internet Banking</label>
         <br>
         <button type="submit">Place an Order</button>

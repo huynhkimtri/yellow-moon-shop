@@ -10,27 +10,45 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Signin - Yellow Moon Shop</title>
+        <link rel="stylesheet" href="css/login.css">
+        <link href="https://getbootstrap.com/docs/4.5/dist/css/bootstrap.min.css"
+              rel="stylesheet"
+              integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" 
+              crossorigin="anonymous">
     </head>
     <body>
-        <h1>Login Page</h1>
         <c:set var="user" value="${sessionScope.USER}"/>
         <c:if test="${not empty user}">
             <c:redirect url="home"/>
         </c:if>
         <c:if test="${empty user}">
             <c:set value="${requestScope.LASTED_USERNAME}" var="username"/>
-            <form action="signIn" method="post">
-                <input type="text" name="username" required="true" minlength="8"
-                       value="<c:if test="${not empty username}">${username}</c:if>">
-                       <input type="password" name="password" required="true" minlength="8">
-                       <input type="submit" name="action" value="signin"> 
-                </form>
-                <a href="signup.jsp">Register page</a>
-            <c:set var="msg" value="${requestScope.MSG_ERROR}"/>
-            <c:if test="${not empty msg}">
-                <p>${msg}</p>
-            </c:if>
+            <div class="signin-page">
+                <div class="auth-form mt-4">
+                    <div class="auth-form-header">
+                        <h1>Sign in to Moon Shop</h1>
+                    </div>
+                    <c:set value="${requestScope.MSG_ERROR}" var="msg"/>
+                    <c:set value="${requestScope.LASTED_EMAIL}" var="lastedEmail"/>
+                    <c:if test="${not empty msg}">
+                        <div class="alert alert-danger" role="alert">${msg}</div>
+                    </c:if>
+                    <div class="auth-form-body mt-3">
+                        <form action="signIn" method="post">
+                            <label for="username">Username</label>
+                            <input type="text" id="email" name="username"  minlength="8"
+                                   value="<c:if test="${not empty username}">${username}</c:if>"
+                                       class="form-control input-block" required="true" autofocus>
+                                   <label for="password">Password<a class="label-link" href="/password_reset">Forgot password?</a></label>
+                                   <input type="password" id="password" name="password" 
+                                          class="form-control input-block" minlength="8" required="true">
+                                   <button type="submit" class="btn btn-primary btn-signin btn-block">Sign in</button>
+                            </form>
+                        </div>
+                        <p class="create-account-callout mt-3">New to Moon Shop? <a href="signup.jsp">Create an account.</a></p>
+                    </div>
+                </div>
         </c:if>
     </body>
 </html>

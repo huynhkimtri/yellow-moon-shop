@@ -57,7 +57,7 @@ public class Orders implements Serializable {
     @Column(name = "amount", nullable = false)
     private int amount;
     @Basic(optional = false)
-    @Column(name = "status", nullable = false, length = 32)
+    @Column(name = "status", length = 32)
     private String status;
     @Column(name = "shipping_email", length = 32)
     private String shippingEmail;
@@ -77,7 +77,7 @@ public class Orders implements Serializable {
     @JoinColumn(name = "payment_id", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private Payments paymentId;
-    @JoinColumn(name = "user_id", referencedColumnName = "username", nullable = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "username")
     @ManyToOne(optional = false)
     private Users userId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "orderId")
@@ -90,10 +90,9 @@ public class Orders implements Serializable {
         this.id = id;
     }
 
-    public Orders(Integer id, int amount, String status, Date createDate) {
+    public Orders(Integer id, int amount, Date createDate) {
         this.id = id;
         this.amount = amount;
-        this.status = status;
         this.createDate = createDate;
     }
 
