@@ -252,49 +252,4 @@ public class CakeDAO implements Serializable {
         }
         return count;
     }
-    public int getCossunt(String likeName, int minPrice, int maxPrice, boolean isActive) {
-        int count = 0;
-        EntityManager entityManager = DBHelper.getEntityManager();
-        try {
-            entityManager.getTransaction().begin();
-            List<Cakes> list = entityManager.createNamedQuery("Cakes.findByNameAndPrice")
-                    .setParameter("name", "%" + likeName + "%")
-                    .setParameter("minPrice", minPrice)
-                    .setParameter("maxPrice", maxPrice)
-                    .setParameter("isActive", isActive)
-                    .getResultList();
-            count = list.size();
-            entityManager.getTransaction().commit();
-        } catch (Exception e) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
-        }
-        return count;
-    }
-    public int getCousnt(String likeName, int minPrice, int maxPrice, boolean isActive) {
-        int count = 0;
-        EntityManager entityManager = DBHelper.getEntityManager();
-        try {
-            entityManager.getTransaction().begin();
-            List<Cakes> list = entityManager.createNamedQuery("Cakes.findByNameAndPrice")
-                    .setParameter("name", "%" + likeName + "%")
-                    .setParameter("minPrice", minPrice)
-                    .setParameter("maxPrice", maxPrice)
-                    .setParameter("isActive", isActive)
-                    .getResultList();
-            count = list.size();
-            entityManager.getTransaction().commit();
-        } catch (Exception e) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
-        }
-        return count;
-    }
-
 }
