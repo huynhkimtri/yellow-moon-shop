@@ -6,9 +6,7 @@
 package trihk.moonshop.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,10 +14,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -47,8 +43,6 @@ public class Payments implements Serializable {
     @Basic(optional = false)
     @Column(name = "is_allowed", nullable = false)
     private boolean isAllowed;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "paymentId")
-    private Collection<Orders> ordersCollection;
 
     public Payments() {
     }
@@ -87,15 +81,6 @@ public class Payments implements Serializable {
         this.isAllowed = isAllowed;
     }
 
-    @XmlTransient
-    public Collection<Orders> getOrdersCollection() {
-        return ordersCollection;
-    }
-
-    public void setOrdersCollection(Collection<Orders> ordersCollection) {
-        this.ordersCollection = ordersCollection;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -120,5 +105,5 @@ public class Payments implements Serializable {
     public String toString() {
         return "trihk.moonshop.entity.Payments[ id=" + id + " ]";
     }
-    
+
 }

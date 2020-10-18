@@ -41,6 +41,11 @@ public class CakeService {
         return cakes;
     }
 
+    public List<Cakes> getListAll() {
+        List<Cakes> cakes = cakeDao.getListCake(Constants.SIZE_OF_PAGE, 0);
+        return cakes;
+    }
+
     public List<Cakes> getListAll(String likeName, int minPrice, int maxPrice, int categoryId, boolean isActive, int limit, int page) {
         List<Cakes> cakes;
         if (categoryId > 0) {
@@ -51,7 +56,7 @@ public class CakeService {
         return cakes;
     }
 
-    public Cakes updateCake(int id, String name, String description,
+    public Cakes updateCake(int id, String name,
             boolean status, String createDate, String expirationDate,
             int quantity, int price, int categoryId, String updateUser) {
         Cakes updatedCake = new Cakes();
@@ -60,6 +65,10 @@ public class CakeService {
 
     public Cakes getOne(int id) {
         return cakeDao.getOne(id);
+    }
+
+    public int countForDashboard() {
+        return cakeDao.getCount();
     }
 
     public int countForHome(boolean isActive) {

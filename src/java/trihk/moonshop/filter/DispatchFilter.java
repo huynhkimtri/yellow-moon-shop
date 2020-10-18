@@ -30,6 +30,7 @@ public class DispatchFilter implements Filter {
     // this value is null, this filter instance is not currently
     // configured. 
     private FilterConfig filterConfig = null;
+    private String encoding = "utf-8";
 
     public DispatchFilter() {
     }
@@ -47,6 +48,10 @@ public class DispatchFilter implements Filter {
             FilterChain chain)
             throws IOException, ServletException {
 
+        request.setCharacterEncoding(encoding);
+        response.setContentType("text/html; charset=UTF-8");
+        response.setCharacterEncoding(encoding);
+
         if (debug) {
             log("DispatchFilter:doFilter()");
         }
@@ -54,6 +59,7 @@ public class DispatchFilter implements Filter {
         Throwable problem = null;
         try {
             HttpServletRequest req = (HttpServletRequest) request;
+            String name = request.getParameter("udtName");
             String uri = req.getRequestURI();
             String url;
             int lastIndex = uri.lastIndexOf("/");
@@ -129,6 +135,7 @@ public class DispatchFilter implements Filter {
                 log("DispatchFilter:Initializing filter");
             }
         }
+
     }
 
     /**

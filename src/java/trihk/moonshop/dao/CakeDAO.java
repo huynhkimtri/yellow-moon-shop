@@ -66,12 +66,14 @@ public class CakeDAO implements Serializable {
         return cake;
     }
 
-    public List<Cakes> getListCake() {
+    public List<Cakes> getListCake(int limit, int index) {
         List<Cakes> list = new ArrayList<>();
         EntityManager em = DBHelper.getEntityManager();
         try {
             em.getTransaction().begin();
             list = em.createNamedQuery("Cakes.findAll")
+                    .setFirstResult(limit * index)
+                    .setMaxResults(limit)
                     .getResultList();
             em.getTransaction().commit();
         } catch (Exception e) {
@@ -176,7 +178,8 @@ public class CakeDAO implements Serializable {
         EntityManager em = DBHelper.getEntityManager();
         try {
             em.getTransaction().begin();
-            count = em.createNamedQuery("Cakes.findAll").getMaxResults();
+            List<Cakes> list = em.createNamedQuery("Cakes.findAll").getResultList();
+            count = list.size();
             em.getTransaction().commit();
         } catch (Exception e) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);

@@ -6,30 +6,24 @@
 package trihk.moonshop.controller;
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import trihk.moonshop.entity.Users;
+import trihk.moonshop.entity.Cakes;
+import trihk.moonshop.entity.Categories;
 import trihk.moonshop.helper.Constants;
-import trihk.moonshop.service.UserService;
+import trihk.moonshop.service.CakeService;
 
 /**
  *
  * @author TriHuynh
  */
-@WebServlet(name = "SignInController", urlPatterns = {"/SignInController"})
-public class SignInController extends HttpServlet {
-
-    private final String signInPage = "signin.jsp";
-    private final String dashboardPage = "dashboard";
-    private final String homePage = "home";
-    private static final Logger LOG = Logger.getLogger(SignInController.class.getName());
+@WebServlet(name = "DashboardController", urlPatterns = {"/DashboardController"})
+public class DashboardController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,39 +36,35 @@ public class SignInController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        String msgError = "MSG_ERROR";
-        String path = signInPage;
+
+        request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html; charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
+
+        String path = "dashboard.jsp";
         try {
-            String username = request.getParameter("username");
-            String password = request.getParameter("password");
-            UserService service = new UserService();
-            Users user = service.signIn(username, password);
-            if (user != null) {
-                if (user.getIsActive()) {
-                    HttpSession session = request.getSession();
-                    session.setAttribute("USER", user);
-                    if (user.getRoleId().getId() == 1) {
-                        path = dashboardPage;
-                    } else {
-                        path = homePage;
-                    }
-                } else {
-                    request.setAttribute(msgError, Constants.MSG_INACTIVE);
-                }
-            } else {
-                request.setAttribute("LASTED_USERNAME", username);
-                request.setAttribute(msgError, Constants.MSG_INCORRECT);
+            CakeService service = new CakeService();
+            List<Cakes> listCakes = service.getListAll();
+            List<Categories> listCategories = service.getListCategories();
+
+            int size = service.countForDashboard();
+            int numOfPages = size / Constants.SIZE_OF_PAGE;
+            if (size % Constants.SIZE_OF_PAGE != 0) {
+                numOfPages = size / Constants.SIZE_OF_PAGE + 1;
             }
-            if (path.equals(signInPage)) {
-                RequestDispatcher dispatcher = request.getRequestDispatcher(path);
-                dispatcher.forward(request, response);
-            } else {
-                response.sendRedirect(path);
-            }
-        } catch (IOException | ServletException e) {
-            request.setAttribute(msgError, Constants.MSG_SERVER_FAIL);
-            LOG.log(Level.SEVERE, e.getMessage());
+
+            request.setAttribute("LIST_CATEGORIES", listCategories);
+            request.setAttribute("LIST_CAKES", listCakes);
+            request.setAttribute("MIN", 0);
+            request.setAttribute("MAX", 999999999);
+            request.setAttribute("NUMBER_OF_PAGES", numOfPages);
+            request.setAttribute("CURRENT_PAGE", 1);
+
+        } catch (Exception e) {
+            // TODO
+        } finally {
+            RequestDispatcher dispatcher = request.getRequestDispatcher(path);
+            dispatcher.forward(request, response);
         }
     }
 

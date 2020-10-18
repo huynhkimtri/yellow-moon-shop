@@ -34,7 +34,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "cakes", catalog = "MoonShop", schema = "dbo")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Cakes.findAll", query = "SELECT c FROM Cakes c"),
+    @NamedQuery(name = "Cakes.findAll", query = "SELECT c FROM Cakes c ORDER BY c.createDate"),
     @NamedQuery(name = "Cakes.findAllByIsActive", query = "SELECT c FROM Cakes c WHERE c.isActive = :isActive"),
     @NamedQuery(name = "Cakes.findByNameAndPriceAndCategory",
             query = "SELECT c FROM Cakes c WHERE c.name LIKE :name AND c.price >= :minPrice AND c.price <= :maxPrice AND c.categoryId.id = :cateId AND c.isActive = :isActive"),
@@ -65,7 +65,7 @@ public class Cakes implements Serializable {
     @Column(name = "image_url", nullable = false, length = 256)
     private String imageUrl;
     @Basic(optional = false)
-    @Column(name = "description", nullable = false, length = 256)
+    @Column(name = "description", nullable = false, length = Integer.MAX_VALUE)
     private String description;
     @Basic(optional = false)
     @Column(name = "price", nullable = false)

@@ -6,17 +6,12 @@
 package trihk.moonshop.controller;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Map;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import trihk.moonshop.entity.Cakes;
 import trihk.moonshop.entity.Users;
-import trihk.moonshop.service.CakeService;
 
 /**
  *
@@ -36,28 +31,33 @@ public class UpdateCakeController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
-//         name, image, price, category, quantity, createDate, expirationDate, status..
+        response.setCharacterEncoding("UTF-8");
         try {
             String id = request.getParameter("id");
-            int cakeId = Integer.parseInt(id);
-            String txtName = request.getParameter("txtName");
-            String txtImageUrl = request.getParameter("txtImageUrl");
-            String txtPrice = request.getParameter("txtPrice");
-            String txtQuantity = request.getParameter("txtQuantity");
-            String dtmCreateDate = request.getParameter("dtmCreateDate");
-            String dtmExpirationDate = request.getParameter("dtmExpirationDate");
-            String cbxCategory = request.getParameter("cbxCategory");
-            String cbxStatus = request.getParameter("cbxStatus");
+            int cakeId = Integer.parseInt(id.trim());
+            String name = request.getParameter("udtName");
+            String imageUrl = request.getParameter("udtImageUrl").trim();
+            String price = request.getParameter("udtPrice").trim();
+            String quantity = request.getParameter("udtQuantity").trim();
+            String createDate = request.getParameter("udtCreateDate").trim();
+            String expirationDate = request.getParameter("udtExpDate").trim();
+            String category = request.getParameter("udtCategory");
+            String status = request.getParameter("udtStatus");
+            System.out.println(imageUrl.length());
+            System.out.println(name);
+//            System.out.println(id + name + imageUrl + price + quantity + createDate + expirationDate + category + status);
             Users user = (Users) request.getSession().getAttribute("USER");
-            CakeService service = new CakeService();
-            Cakes newCake = service.updateCake(cakeId, txtName, dtmCreateDate,
-                    true, dtmCreateDate, dtmExpirationDate,
-                    0, 0, 0, cbxStatus);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("home");
-            dispatcher.forward(request, response);
-        } catch (IOException | ServletException e) {
+//            CakeService service = new CakeService();
+//            Cakes newCake = service.updateCake(cakeId, name,
+//                    true, createDate, expirationDate,
+//                    0, 0, 0, status);
+        } catch (NumberFormatException e) {
+            // TODO
         }
+        response.sendRedirect("dashboard");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
