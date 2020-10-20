@@ -11,12 +11,16 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Home Page</title>
+        <title>Home - YMS</title>
         <link href="https://getbootstrap.com/docs/4.5/dist/css/bootstrap.min.css"
               rel="stylesheet"
               integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" 
               crossorigin="anonymous">
     </head>
+    <c:set value="${sessionScope.USER}" var="user"/>
+    <c:if test="${not empty user and user.roleId.id eq 1}">
+        <c:redirect url="dashboard"/>
+    </c:if>
     <body class="bg-light">
         <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom shadow-sm">
             <div class="container-xl">
@@ -58,35 +62,43 @@
                 </div>
             </div>
         </nav>
-        <section class="jumbotron text-center">
+        <section class="jumbotron" style="padding: 2rem !important">
             <div class="container">
                 <form action="search" method="get">
-                    <label for="keyword">Keyword:</label>
-                    <input type="text" class="form-control" id="keyword" name="keyword"
-                           value="${requestScope.KEYWORD}"/>
-
-                    <label for="min">Min price:</label>
-                    <input type="number" class="form-control" id="min" name="min" min="0" max="999999999" 
-                           required="true" value="${requestScope.MIN}"/>
-
-                    <label for="max">Max price:</label>
-                    <input type="number" class="form-control" id="max" name="max" min="0" max="999999999" 
-                           required="true" value="${requestScope.MAX}">
-
-                    <label for="category">Category:</label>
-                    <c:set value="${requestScope.LIST_CATEGORIES}" var="categories"/>
-                    <c:if test="${not empty categories}">
-                        <select name="category" class="form-control" id="category">
-                            <option value="0">-- Select one --</option>
-                            <c:forEach items="${categories}" var="cate">
-                                <option value="${cate.id}" 
-                                        <c:if test="${requestScope.CATEGORY == cate.id}"> selected="true"</c:if>>
-                                    ${cate.name}
-                                </option>
-                            </c:forEach>
-                        </select>
-                    </c:if>
-                    <button class="btn btn-primary btn-lg btn-block" type="submit">Search for cake</button>
+                    <div class="row mb-4">
+                        <div class="col-md-3">
+                            <label for="keyword">Keyword:</label>
+                            <input type="text" class="form-control" id="keyword" name="keyword"
+                                   value="${requestScope.KEYWORD}"/>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="min">Min price:</label>
+                            <input type="number" class="form-control" id="min" name="min" min="0" max="999999999" 
+                                   required="true" value="${requestScope.MIN}"/>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="max">Max price:</label>
+                            <input type="number" class="form-control" id="max" name="max" min="0" max="999999999" 
+                                   required="true" value="${requestScope.MAX}">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="category">Category:</label>
+                            <c:set value="${requestScope.LIST_CATEGORIES}" var="categories"/>
+                            <c:if test="${not empty categories}">
+                                <select name="category" class="form-control" id="category">
+                                    <option value="0">Select ...</option>
+                                    <c:forEach items="${categories}" var="cate">
+                                        <option value="${cate.id}" 
+                                                <c:if test="${requestScope.CATEGORY == cate.id}"> selected="true"</c:if>>
+                                            ${cate.name}
+                                        </option>
+                                    </c:forEach>
+                                </select>
+                            </c:if>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" type="submit">Search for cake</button>
+                    <button class="btn btn-secondary" type="reset">Reset search value</button>
                 </form>
             </div>
         </section>
@@ -100,7 +112,7 @@
 
                                 <div class="col-md-4">
                                     <div class="card mb-4 shadow-sm">
-                                        <img class="bd-placeholder-img card-img-top" src="${cake.imageUrl}"/>
+                                        <img class="bd-placeholder-img card-img-top" height="256" src="${cake.imageUrl}"/>
                                         <div class="card-body">
                                             <span class="badge badge-warning">${cake.categoryId.name}</span>
                                             <h5 class="card-title">${cake.name} - ${cake.price} VND</h5>
@@ -111,10 +123,21 @@
                                                         <input type="hidden" name="cakeId" value="${cake.id}"/>
                                                         <input type="hidden" name="cakeName" value="${cake.name}"/>
                                                         <input type="hidden" name="urlParams" value="${urlParams}"/>
-                                                        <button type="submit" class="btn btn-sm btn-success">Add to Cart</button>
+                                                        <c:if test="${cake.quantity > 0}">
+                                                            <input type="hidden" name="queryString" value="${requestScope['javax.servlet.forward.query_string']}"/>
+                                                            <button type="submit" class="btn btn-sm btn-success">Add to Cart</button>
+                                                        </c:if>
+                                                        <c:if test="${cake.quantity <= 0}">
+                                                            <button type="button" class="btn btn-sm btn-secondary">Contact later</button>
+                                                        </c:if>
                                                     </form>
                                                 </div>
-                                                <small class="text-muted">Stock: ${cake.quantity}</small>
+                                                <c:if test="${cake.quantity > 0}">
+                                                    <span class="badge badge-primary">Stock: ${cake.quantity}</span>
+                                                </c:if>
+                                                <c:if test="${cake.quantity <= 0}">
+                                                    <span class="badge badge-dark">Out of Stock</span>
+                                                </c:if>
                                             </div>
                                         </div>
                                     </div>

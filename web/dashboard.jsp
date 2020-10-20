@@ -7,7 +7,6 @@
 <%@page language="java" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -30,7 +29,7 @@
     <body>
         <!--Navigation Bar-->
         <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-            <a class="navbar-brand col-md-2 col-lg-1 mr-0 px-3" style="color: yellow" href="#"><b>Moon Shop</b></a>
+            <a class="navbar-brand col-md-2 col-lg-1 mr-0 px-3" style="color: yellow" href="./"><b>Moon Shop</b></a>
             <button class="navbar-toggler position-absolute d-md-none collapsed" 
                     type="button" data-toggle="collapse" data-target="#sidebarMenu" 
                     aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,7 +39,7 @@
                                placeholder="Search" aria-label="Search">-->
             <ul class="navbar-nav px-3">
                 <li class="nav-item text-nowrap">
-                    <a class="nav-link" href="#">Sign out</a>
+                    <a class="nav-link" href="signOut">Sign out</a>
                 </li>
             </ul>
         </nav>
@@ -53,10 +52,16 @@
                 <%--<%@include file="component/sidebar.jspf" %>--%>
 
                 <!--Main screen-->
-                <main role="main" class="col-md-12 ml-sm-auto col-lg-12 px-md-4"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+                <main role="main" class="col-md-12 ml-sm-auto col-lg-12 px-md-4">
+
+                    <c:set value="${requestScope.TOTAL_CAKES}" var="total"/>
 
                     <h2 class="pt-3 pb-2 mb-3">Products Management</h2>
                     <a class="btn btn-primary mb-3" href="./dashboard" role="button"><i class="fa fa-refresh"></i> Refresh Data</a>
+                    <a class="btn btn-success mb-3" href="newCake" role="button"><i class="fa fa-plus"></i> Create new cake</a>
+
+                    <h4 class="mb-4">Total: <span class="badge badge-warning">${total} cakes</span></h4>
+
                     <div class="table-responsive">
                         <table class="table table-sm table-bordered table-hover">
                             <thead class="thead-dark">
@@ -84,7 +89,7 @@
                                             <!--counter-->
                                             <td class="align-middle">
                                                 <input type="hidden" value="${cake.id}" name="id" />
-                                                <b>${counter.count}.</b>
+                                                ${counter.count}.
                                             </td>
                                             <!--name-->
                                             <td class="align-middle">
@@ -92,7 +97,7 @@
                                             </td>
                                             <!--image-->
                                             <td class="align-middle">
-                                                <img class="bd-placeholder-img"  height="50" id="previewImg_${cake.id}" src="${cake.imageUrl}"/>
+                                                <img class="bd-placeholder-img"  height="80" id="previewImg_${cake.id}" src="${cake.imageUrl}"/>
                                                 <input type="hidden" name="udtImageUrl" id="imgUrl_${cake.id}" value="${cake.imageUrl}" />
                                                 <br>
                                                 <input type="file" onchange="readURL(this, ${cake.id});" style="display:none;" id="chooseFile_${cake.id}">
@@ -111,7 +116,7 @@
                                                     <c:forEach items="${categories}" var="category">
                                                         <option value="${category.id}" 
                                                                 <c:if test="${cake.categoryId.id == category.id}"> selected="true"</c:if>>
-                                                            ${fn:toLowerCase(category.name)}
+                                                            ${category.name}
                                                         </option>
                                                     </c:forEach>
                                                 </select>
@@ -125,7 +130,7 @@
                                             <!--create date-->
                                             <td class="align-middle">
                                                 <input class="form-control" type="date" 
-                                                       name="udtCreateDate"
+                                                       name="udtCreateDate" 
                                                        value="<fmt:formatDate pattern="yyyy-MM-dd" value="${cake.createDate}" />" />
                                             </td>
                                             <!--exp date-->
@@ -143,10 +148,11 @@
                                                 </td>
                                                 <!--button-->
                                                 <td class="align-middle">
-                                                    <button class="btn btn-sm btn-warning" onclick="return updateCake()" type="submit">Update</button>
-                                                </td>
-                                            </tr>
-                                        </form>
+                                                    <input type="hidden" name="queryString" value="${requestScope['javax.servlet.forward.query_string']}"/>
+                                                <button class="btn btn-sm btn-warning" onclick="return updateCake()" type="submit">Update</button>
+                                            </td>
+                                        </tr>
+                                    </form>
                                 </c:forEach>
                             </c:if>
                             </tbody>
@@ -160,7 +166,7 @@
                                 <c:forEach begin="1" end="${numOfPages}" step="1" varStatus="theCount">
                                     <li class="page-item <c:if test="${currentPage eq theCount.count}">active</c:if>">
                                             <a class="page-link" 
-                                               href="search?keyword=${requestScope.KEYWORD}&min=${requestScope.MIN}&max=${requestScope.MAX}&category=${requestScope.CATEGORY}&page=${theCount.count}">
+                                               href="dashboard?page=${theCount.count}">
                                             ${theCount.count}</a>
                                     </li>
                                 </c:forEach>

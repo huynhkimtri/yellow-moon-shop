@@ -43,9 +43,8 @@ public class DashboardController extends HttpServlet {
 
         String path = "dashboard.jsp";
         try {
+            String page = request.getParameter("page");
             CakeService service = new CakeService();
-            List<Cakes> listCakes = service.getListAll();
-            List<Categories> listCategories = service.getListCategories();
 
             int size = service.countForDashboard();
             int numOfPages = size / Constants.SIZE_OF_PAGE;
@@ -53,12 +52,24 @@ public class DashboardController extends HttpServlet {
                 numOfPages = size / Constants.SIZE_OF_PAGE + 1;
             }
 
+            int pageIndex = 0;
+            try {
+                if (page != null) {
+                    pageIndex = Integer.parseInt(page.trim()) - 1;
+                }
+            } catch (NumberFormatException e) {
+                pageIndex = 0;
+            }
+
+            List<Cakes> listCakes = service.getListAll(Constants.SIZE_OF_PAGE, pageIndex);
+            List<Categories> listCategories = service.getListCategories();
+
             request.setAttribute("LIST_CATEGORIES", listCategories);
             request.setAttribute("LIST_CAKES", listCakes);
-            request.setAttribute("MIN", 0);
-            request.setAttribute("MAX", 999999999);
+            request.setAttribute("TOTAL_CAKES", size);
             request.setAttribute("NUMBER_OF_PAGES", numOfPages);
-            request.setAttribute("CURRENT_PAGE", 1);
+            request.setAttribute("PAGE_INDEX", pageIndex);
+            request.setAttribute("CURRENT_PAGE", pageIndex + 1);
 
         } catch (Exception e) {
             // TODO

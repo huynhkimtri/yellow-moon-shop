@@ -6,21 +6,22 @@
 package trihk.moonshop.controller;
 
 import java.io.IOException;
+import java.util.List;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import trihk.moonshop.bean.CartBean;
-import trihk.moonshop.service.CartService;
+import trihk.moonshop.entity.Categories;
+import trihk.moonshop.service.CakeService;
 
 /**
  *
  * @author TriHuynh
  */
-@WebServlet(name = "AddToCartController", urlPatterns = {"/AddToCartController"})
-public class AddToCartController extends HttpServlet {
+@WebServlet(name = "NewCakeController", urlPatterns = {"/NewCakeController"})
+public class NewCakeController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,23 +35,11 @@ public class AddToCartController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String path = "home";
-        try {
-            String id = request.getParameter("cakeId");
-            String queryString = request.getParameter("queryString");
-            int itemId = Integer.parseInt(id);
-            CartBean cart = (CartBean) request.getSession().getAttribute("MY_CART");
-            CartService sCart = new CartService();
-            cart = sCart.addItemToCart(itemId, cart);
-            HttpSession session = request.getSession();
-            session.setAttribute("MY_CART", cart);
-            if (queryString != null && queryString.trim().length() > 0) {
-                path = "search?" + queryString;
-            }
-            response.sendRedirect(path);
-        } catch (NumberFormatException e) {
-            // TODO
-        }
+        CakeService service = new CakeService();
+        List<Categories> listCategories = service.getListCategories();
+        request.setAttribute("LIST_CATEGORIES", listCategories);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("createCake.jsp");
+        dispatcher.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

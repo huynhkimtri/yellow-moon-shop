@@ -34,12 +34,12 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "cakes", catalog = "MoonShop", schema = "dbo")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Cakes.findAll", query = "SELECT c FROM Cakes c ORDER BY c.createDate"),
-    @NamedQuery(name = "Cakes.findAllByIsActive", query = "SELECT c FROM Cakes c WHERE c.isActive = :isActive"),
+    @NamedQuery(name = "Cakes.findAll", query = "SELECT c FROM Cakes c ORDER BY c.createDate DESC"),
+    @NamedQuery(name = "Cakes.findAllByIsActive", query = "SELECT c FROM Cakes c WHERE c.isActive = :isActive AND c.quantity > 0 ORDER BY c.createDate DESC"),
     @NamedQuery(name = "Cakes.findByNameAndPriceAndCategory",
-            query = "SELECT c FROM Cakes c WHERE c.name LIKE :name AND c.price >= :minPrice AND c.price <= :maxPrice AND c.categoryId.id = :cateId AND c.isActive = :isActive"),
+            query = "SELECT c FROM Cakes c WHERE c.name LIKE :name AND c.quantity > 0 AND c.price >= :minPrice AND c.price <= :maxPrice AND c.categoryId.id = :cateId AND c.isActive = :isActive ORDER BY c.createDate DESC"),
     @NamedQuery(name = "Cakes.findByNameAndPrice",
-            query = "SELECT c FROM Cakes c WHERE c.name LIKE :name AND c.price >= :minPrice AND c.price <= :maxPrice AND c.isActive = :isActive"),
+            query = "SELECT c FROM Cakes c WHERE c.name LIKE :name AND c.quantity > 0 AND c.price >= :minPrice AND c.price <= :maxPrice AND c.isActive = :isActive ORDER BY c.createDate DESC"),
     @NamedQuery(name = "Cakes.findById", query = "SELECT c FROM Cakes c WHERE c.id = :id"),
     @NamedQuery(name = "Cakes.findByName", query = "SELECT c FROM Cakes c WHERE c.name = :name"),
     @NamedQuery(name = "Cakes.findByImageUrl", query = "SELECT c FROM Cakes c WHERE c.imageUrl = :imageUrl"),

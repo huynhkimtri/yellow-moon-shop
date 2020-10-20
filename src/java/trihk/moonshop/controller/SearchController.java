@@ -54,7 +54,7 @@ public class SearchController extends HttpServlet {
             }
             CakeService service = new CakeService();
 
-            int size = service.countForSearch(keyword, minPrice, maxPrice,
+            int size = service.countForSearch(keyword.trim(), minPrice, maxPrice,
                     categoryId, Boolean.TRUE);
 
             int numOfPages = size / Constants.SIZE_OF_PAGE;
@@ -70,7 +70,7 @@ public class SearchController extends HttpServlet {
                 pageIndex = 0;
             }
             List<Cakes> listCakes
-                    = service.getListAll(keyword, minPrice, maxPrice,
+                    = service.getListAll(keyword.trim(), minPrice, maxPrice,
                             categoryId, Boolean.TRUE, Constants.SIZE_OF_PAGE, pageIndex);
             request.setAttribute("LIST_CAKES", listCakes);
             List<Categories> listCategories = service.getListCategories();

@@ -6,11 +6,15 @@
 package trihk.moonshop.controller;
 
 import java.io.IOException;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import trihk.moonshop.entity.Cakes;
+import trihk.moonshop.entity.Users;
+import trihk.moonshop.service.CakeService;
 
 /**
  *
@@ -31,6 +35,33 @@ public class CreateCakeController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        try {
+            String name = request.getParameter("name");
+            String des = request.getParameter("description");
+            String imageUrl = request.getParameter("imageUrl");
+            String sPrice = request.getParameter("price");
+            int price = Integer.parseInt(sPrice.trim());
+            String sQuantity = request.getParameter("quantity");
+            int quantity = Integer.parseInt(sQuantity.trim());
+            String sCategory = request.getParameter("category");
+            int categoryId = Integer.parseInt(sCategory.trim());
+            String createDate = request.getParameter("createDate");
+            String expDate = request.getParameter("expDate");
+
+            Users user = (Users) request.getSession().getAttribute("USER");
+
+            CakeService service = new CakeService();
+            Cakes cake = service.insert(name, des, imageUrl, price, categoryId,
+                    quantity, createDate, expDate, user);
+
+            if (cake != null) {
+                response.sendRedirect("dashboard");
+            } else {
+                request.getRequestDispatcher("newCake").forward(request, response);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
