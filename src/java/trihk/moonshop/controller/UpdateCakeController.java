@@ -6,20 +6,12 @@
 package trihk.moonshop.controller;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import trihk.moonshop.entity.Cakes;
 import trihk.moonshop.entity.Users;
-import trihk.moonshop.helper.Constants;
 import trihk.moonshop.service.CakeService;
 
 /**
