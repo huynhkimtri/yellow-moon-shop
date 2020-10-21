@@ -21,10 +21,13 @@
     <c:if test="${not empty user and user.roleId.id eq 1}">
         <c:redirect url="dashboard"/>
     </c:if>
+
+    <fmt:setLocale value="vi_VN"/>
+
     <body class="bg-light">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom shadow-sm">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark flex-md-nowrap shadow">
             <div class="container-xl">
-                <a class="navbar-brand" href="./">Moon Shop</a>
+                <a class="navbar-brand" style="color: var(--warning)" href="./"><b>Moon Shop</b></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample07XL" aria-controls="navbarsExample07XL" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -74,11 +77,13 @@
                         <div class="col-md-3">
                             <label for="min">Min price:</label>
                             <input type="number" class="form-control" id="min" name="min" min="0" max="999999999" 
+                                   onkeypress="return event.charCode >= 48"
                                    required="true" value="${requestScope.MIN}"/>
                         </div>
                         <div class="col-md-3">
                             <label for="max">Max price:</label>
                             <input type="number" class="form-control" id="max" name="max" min="0" max="999999999" 
+                                   onkeypress="return event.charCode >= 48"
                                    required="true" value="${requestScope.MAX}">
                         </div>
                         <div class="col-md-3">
@@ -103,19 +108,23 @@
             </div>
         </section>
         <div class="container">
-            <div class="album py-5 bg-light">
+            <div class="album py-3 bg-light">
                 <div class="container">
                     <c:set value="${requestScope.LIST_CAKES}" var="cakes"/>
                     <c:if test="${not empty cakes}">
                         <div class="row">
                             <c:forEach items="${cakes}" var="cake">
-
                                 <div class="col-md-4">
                                     <div class="card mb-4 shadow-sm">
                                         <img class="bd-placeholder-img card-img-top" height="256" src="${cake.imageUrl}"/>
                                         <div class="card-body">
-                                            <span class="badge badge-warning">${cake.categoryId.name}</span>
-                                            <h5 class="card-title">${cake.name} - ${cake.price} VND</h5>
+                                            <span class="badge badge-warning mb-2">#${cake.categoryId.name}</span>
+                                            <h5 class="card-title mb-1">${cake.name}</h5>
+                                            <h5 class="card-title"><b style="color: var(--danger)"><fmt:formatNumber value="${cake.price}" type="currency"/></b></h5>
+                                            <div class="text-muted mb-4">
+                                                ${cake.description}<br>
+                                                Cre: <fmt:formatDate pattern="dd/MM/yyyy" value="${cake.createDate}" /> - Exp: <fmt:formatDate pattern="dd/MM/yyyy" value="${cake.expirationDate}" />
+                                            </div>
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <div class="btn-group">
                                                     <form action="addToCart" method="POST">
@@ -125,10 +134,10 @@
                                                         <input type="hidden" name="urlParams" value="${urlParams}"/>
                                                         <c:if test="${cake.quantity > 0}">
                                                             <input type="hidden" name="queryString" value="${requestScope['javax.servlet.forward.query_string']}"/>
-                                                            <button type="submit" class="btn btn-sm btn-success">Add to Cart</button>
+                                                            <button type="submit" class="btn btn-success" style="font-weight: bold">ADD TO CART</button>
                                                         </c:if>
                                                         <c:if test="${cake.quantity <= 0}">
-                                                            <button type="button" class="btn btn-sm btn-secondary">Contact later</button>
+                                                            <button type="button" class="btn btn-secondary">CONTACT LATER</button>
                                                         </c:if>
                                                     </form>
                                                 </div>
@@ -165,8 +174,7 @@
                     </c:if>
                 </div>
             </div>
-
-            <footer class="my-5 pt-5 text-muted text-center text-small">
+            <footer class="text-muted mb-5 text-center text-small">
                 <p class="mb-1">Yellow Moon Shop - ©2020 - Power by TriHK</p>
             </footer>
         </div>

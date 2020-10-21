@@ -2,21 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/D:/FU/LAB231/MoonShop/YellowMoonShop/web/home.jsp</file>
-            <file>file:/D:/FU/LAB231/MoonShop/YellowMoonShop/src/java/trihk/moonshop/entity/Cakes.java</file>
-            <file>file:/D:/FU/LAB231/MoonShop/YellowMoonShop/src/java/trihk/moonshop/controller/SearchController.java</file>
-            <file>file:/D:/FU/LAB231/MoonShop/YellowMoonShop/web/err404.html</file>
-            <file>file:/D:/FU/LAB231/MoonShop/YellowMoonShop/web/WEB-INF/web.xml</file>
-            <file>file:/D:/FU/LAB231/MoonShop/YellowMoonShop/src/java/trihk/moonshop/service/CakeService.java</file>
-            <file>file:/D:/FU/LAB231/MoonShop/YellowMoonShop/web/signin.jsp</file>
-            <file>file:/D:/FU/LAB231/MoonShop/YellowMoonShop/src/java/trihk/moonshop/dao/CakeDAO.java</file>
-            <file>file:/D:/FU/LAB231/MoonShop/YellowMoonShop/src/java/trihk/moonshop/controller/UpdateCakeController.java</file>
-            <file>file:/D:/FU/LAB231/MoonShop/YellowMoonShop/src/java/trihk/moonshop/helper/Constants.java</file>
-            <file>file:/D:/FU/LAB231/MoonShop/YellowMoonShop/src/java/trihk/moonshop/controller/HomeController.java</file>
-            <file>file:/D:/FU/LAB231/MoonShop/YellowMoonShop/src/java/trihk/moonshop/controller/DashboardController.java</file>
-            <file>file:/D:/FU/LAB231/MoonShop/YellowMoonShop/src/java/trihk/moonshop/controller/UpdateCartController.java</file>
-            <file>file:/D:/FU/LAB231/MoonShop/YellowMoonShop/web/dashboard.jsp</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

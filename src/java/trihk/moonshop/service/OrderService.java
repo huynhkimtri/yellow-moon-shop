@@ -76,7 +76,7 @@ public class OrderService {
             detail.setQuantity(val);
             detailDao.insert(detail);
             Cakes cake = cakeDao.getOne(item.getId());
-            if (cake.getQuantity() > val) {
+            if (cake.getQuantity() >= val) {
                 cake.setQuantity(cake.getQuantity() - val);
                 cakeDao.update(cake);
             }

@@ -5,6 +5,7 @@
  */
 package trihk.moonshop.dao;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
@@ -52,10 +53,13 @@ public class UserDAO {
         Users user = null;
         try {
             em.getTransaction().begin();
-            user = (Users) em.createNamedQuery("Users.findByUsernameAndPassword")
+            List<Users> list  = em.createNamedQuery("Users.findByUsernameAndPassword")
                     .setParameter("username", username)
                     .setParameter("password", password)
-                    .getSingleResult();
+                    .getResultList();
+            if(!list.isEmpty()) {
+                user = list.get(0);
+            }
             em.getTransaction().commit();
         } catch (Exception e) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);

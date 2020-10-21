@@ -35,6 +35,7 @@ public class Constants {
     public static final String MSG_EXISTED_USERNAME = "This username is already taken. Please try another.";
     public static final String MSG_SUCCESS = "Your article has been created!";
     public static final String MSG_FAIL = "Something wrong here! Try again.";
+    public static final String MSG_UPDATE_ITEM_FAIL = "Sorry, this cake has not enough quantity to buy.";
 
     public static final String MSG_SERVER_FAIL = "Something not working here! Try again.";
 }

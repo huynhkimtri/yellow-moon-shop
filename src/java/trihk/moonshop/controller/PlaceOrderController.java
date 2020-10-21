@@ -6,6 +6,7 @@
 package trihk.moonshop.controller;
 
 import java.io.IOException;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -36,29 +37,27 @@ public class PlaceOrderController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try {
-            String name = request.getParameter("name");
-            String phone = request.getParameter("phone");
-            String email = request.getParameter("email");
-            String address = request.getParameter("address");
-            String payment = request.getParameter("payment");
-            HttpSession session = request.getSession();
-            CartBean cart = (CartBean) session.getAttribute("MY_CART");
-            Users user = (Users) session.getAttribute("USER");
-            String username = null;
-            if (user != null) {
-                username = user.getUsername();
-            }
-            OrderService service = new OrderService();
-            Orders order = service.saveOrder(cart, username, name, phone, email, address, payment);
-            if (order != null) {
-                session.removeAttribute("MY_CART");
-            }
-        } catch (Exception e) {
-            // TODO
-        } finally {
-            response.sendRedirect("./");
+        String path = "checkoutResult.jsp";
+        String name = request.getParameter("name");
+        String phone = request.getParameter("phone");
+        String email = request.getParameter("email");
+        String address = request.getParameter("address");
+        String payment = request.getParameter("payment");
+        HttpSession session = request.getSession();
+        CartBean cart = (CartBean) session.getAttribute("MY_CART");
+        Users user = (Users) session.getAttribute("USER");
+        String username = null;
+        if (user != null) {
+            username = user.getUsername();
         }
+        OrderService service = new OrderService();
+        Orders order = service.saveOrder(cart, username, name, phone, email, address, payment);
+        if (order != null) {
+            session.removeAttribute("MY_CART");
+            request.setAttribute("MY_ORDER", order);
+        }
+        RequestDispatcher dispatcher = request.getRequestDispatcher(path);
+        dispatcher.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
