@@ -65,7 +65,7 @@ public class UpdateCakeController extends HttpServlet {
             service.updateCake(cakeId, name, imageUrl, price,
                     categoryId, quantity, sCreateDate, sExpDate, status, user);
             
-            if (queryString != null) {
+            if (queryString != null && !queryString.isEmpty()) {
                 path = path + "?" + queryString;
             }
             

@@ -59,7 +59,6 @@ public class DispatchFilter implements Filter {
         Throwable problem = null;
         try {
             HttpServletRequest req = (HttpServletRequest) request;
-            String name = request.getParameter("udtName");
             String uri = req.getRequestURI();
             String url;
             int lastIndex = uri.lastIndexOf("/");
